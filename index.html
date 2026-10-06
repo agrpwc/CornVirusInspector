@@ -1,0 +1,1177 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>สืบไวรัสข้าวโพด</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Taviraj:wght@400;500;600;700&family=Sarabun:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F7F1;
+    --surface:#FFFFFF;
+    --surface-2:#EFF2E8;
+    --ink:#212B1C;
+    --muted:#5B6B54;
+    --line:#DCE3D2;
+    --accent:#B9812A;
+    --accent-ink:#5C3D10;
+    --accent-soft:#F3E4C6;
+    --good:#3E7A4F;
+    --good-soft:#E1F0E3;
+    --warn:#AE4420;
+    --warn-soft:#F7E4DA;
+    --info:#375E82;
+    --info-soft:#DFE9F2;
+    --header-bg:#1F2A19;
+    --header-ink:#F2F1E6;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#12160E;
+      --surface:#1B2116;
+      --surface-2:#222A1B;
+      --ink:#ECEFE4;
+      --muted:#A7B39A;
+      --line:#333D29;
+      --accent:#E3AC55;
+      --accent-ink:#F7E3BC;
+      --accent-soft:#3A2C13;
+      --good:#7FC58E;
+      --good-soft:#1C3423;
+      --warn:#E38A63;
+      --warn-soft:#3A2419;
+      --info:#8FB6DA;
+      --info-soft:#1B2C3A;
+      --header-bg:#0D110A;
+      --header-ink:#EDEFE2;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#12160E;
+    --surface:#1B2116;
+    --surface-2:#222A1B;
+    --ink:#ECEFE4;
+    --muted:#A7B39A;
+    --line:#333D29;
+    --accent:#E3AC55;
+    --accent-ink:#F7E3BC;
+    --accent-soft:#3A2C13;
+    --good:#7FC58E;
+    --good-soft:#1C3423;
+    --warn:#E38A63;
+    --warn-soft:#3A2419;
+    --info:#8FB6DA;
+    --info-soft:#1B2C3A;
+    --header-bg:#0D110A;
+    --header-ink:#EDEFE2;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Sarabun',system-ui,sans-serif;
+    padding-inline:16px;
+    padding-block:0;
+  }
+  h1,h2,h3,.display{
+    font-family:'Taviraj',Georgia,serif;
+    text-wrap:balance;
+    margin:0;
+  }
+  .mono{font-family:'JetBrains Mono',ui-monospace,monospace;}
+  a{color:var(--accent-ink);}
+
+  header.top{
+    position:sticky;
+    top:env(safe-area-inset-top,0px);
+    z-index:20;
+    margin-inline:-16px;
+    padding:14px 16px calc(14px);
+    background:var(--header-bg);
+    color:var(--header-ink);
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .top-row{
+    display:flex;align-items:center;justify-content:space-between;gap:12px;
+    max-width:920px;margin:0 auto;
+  }
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;}
+  .brand .mark{font-size:26px;line-height:1;}
+  .brand h1{font-size:19px;font-weight:600;color:var(--header-ink);}
+  .brand p{margin:2px 0 0;font-size:12px;color:#C8CFBB;}
+  .ref-btn{
+    flex:none;
+    background:transparent;
+    border:1px solid rgba(255,255,255,.35);
+    color:var(--header-ink);
+    font:inherit;font-size:12.5px;
+    padding:7px 12px;border-radius:99px;
+    cursor:pointer;white-space:nowrap;
+  }
+  .ref-btn:hover{background:rgba(255,255,255,.1);}
+
+  .chiprow{
+    max-width:920px;margin:12px auto 0;
+    display:flex;gap:7px;overflow-x:auto;padding-bottom:2px;
+    scrollbar-width:thin;
+  }
+  .chip{
+    flex:none;
+    display:flex;align-items:center;gap:6px;
+    border:1px solid rgba(255,255,255,.18);
+    background:rgba(255,255,255,.05);
+    color:#D7DCC8;
+    padding:6px 10px;border-radius:9px;
+    font-size:12.5px;cursor:pointer;font-family:'JetBrains Mono',monospace;
+  }
+  .chip.current{border-color:var(--accent);background:rgba(227,172,85,.15);color:var(--accent-ink,#F3E4C6);}
+  .chip .dot{width:7px;height:7px;border-radius:99px;background:#5B6650;flex:none;}
+  .chip.done .dot{background:var(--good);}
+
+  main{max-width:760px;margin:0 auto;padding-block:20px 48px;}
+
+  .progress{display:flex;gap:5px;margin-bottom:16px;}
+  .progress i{flex:1;height:4px;border-radius:99px;background:var(--line);}
+  .progress i.on{background:var(--accent);}
+
+  .stage{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px;
+    display:flex;flex-direction:column;gap:16px;
+  }
+  .eyebrow{
+    font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--muted);font-weight:600;
+  }
+  .stage h2{font-size:21px;font-weight:600;color:var(--ink);}
+  .stage p.lead{margin:0;color:var(--muted);font-size:14.5px;line-height:1.6;}
+
+  .photoframe{
+    border:1px solid var(--line);
+    border-radius:12px;overflow:hidden;background:var(--surface-2);
+  }
+  .photoframe img{display:block;width:100%;max-width:100%;height:auto;}
+  .photoframe .cap{
+    padding:8px 12px;font-size:12.5px;color:var(--muted);
+    display:flex;justify-content:space-between;gap:8px;border-top:1px solid var(--line);
+  }
+
+  .opts{display:flex;flex-direction:column;gap:9px;}
+  .opt{
+    text-align:left;
+    border:1px solid var(--line);
+    background:var(--surface);
+    color:var(--ink);
+    border-radius:11px;
+    padding:12px 14px;
+    font:inherit;font-size:14.5px;line-height:1.55;
+    cursor:pointer;
+    display:flex;gap:10px;align-items:flex-start;
+  }
+  .opt:hover{border-color:var(--accent);}
+  .opt:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .opt .tag{
+    flex:none;width:22px;height:22px;border-radius:99px;
+    border:1px solid var(--line);display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:600;color:var(--muted);margin-top:1px;
+  }
+  .opt[disabled]{cursor:default;}
+  .opt.pick-good{border-color:var(--good);background:var(--good-soft);}
+  .opt.pick-good .tag{background:var(--good);border-color:var(--good);color:#fff;}
+  .opt.pick-bad{border-color:var(--warn);background:var(--warn-soft);}
+  .opt.pick-bad .tag{background:var(--warn);border-color:var(--warn);color:#fff;}
+  .opt.other-good{border-color:var(--good);}
+  .opt.sel{border-color:var(--accent);background:var(--accent-soft);}
+  .opt.sel .tag{background:var(--accent);border-color:var(--accent);color:#2A1B04;}
+  .subhead{font-size:14px;font-weight:600;color:var(--muted);margin:2px 0 -4px;}
+
+  .note{
+    border-radius:11px;padding:13px 14px;font-size:14px;line-height:1.65;
+  }
+  .note.good{background:var(--good-soft);color:var(--ink);}
+  .note.warn{background:var(--warn-soft);color:var(--ink);}
+  .note.info{background:var(--info-soft);color:var(--ink);}
+  .note b{font-weight:600;}
+  .note .k{font-family:'JetBrains Mono',monospace;font-weight:600;}
+
+  .compare{
+    display:flex;gap:10px;margin-top:4px;flex-wrap:wrap;
+  }
+  .compare figure{margin:0;flex:1;min-width:140px;}
+  .compare img{width:100%;border-radius:9px;border:1px solid var(--line);display:block;}
+  .compare figcaption{font-size:12px;color:var(--muted);margin-top:4px;text-align:center;}
+
+  .rulecard{
+    border:1px solid var(--info);border-radius:12px;padding:16px;background:var(--info-soft);
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .rulecard .eyebrow{color:var(--info);}
+  .path{
+    border-radius:10px;padding:11px 13px;background:var(--surface);border:1px solid var(--line);
+    font-size:14px;line-height:1.6;
+  }
+  .path b{display:block;margin-bottom:3px;}
+
+  .actions{display:flex;justify-content:flex-end;gap:10px;margin-top:2px;}
+  .btn{
+    font:inherit;font-size:14.5px;font-weight:600;
+    padding:10px 18px;border-radius:99px;border:1px solid var(--accent);
+    background:var(--accent);color:#2A1B04;cursor:pointer;
+  }
+  .btn.ghost{background:transparent;color:var(--accent-ink);}
+  .btn:disabled{opacity:.4;cursor:default;}
+
+  .reveal{
+    display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;
+    background:var(--surface-2);border:1px solid var(--line);
+  }
+  .reveal .code{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;
+    background:var(--accent-soft);color:var(--accent-ink);padding:4px 9px;border-radius:8px;flex:none;
+  }
+  .reveal div p{margin:2px 0 0;font-size:13px;color:var(--muted);}
+  .reveal div h3{font-size:16.5px;font-weight:600;}
+
+  .done-screen{
+    text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;padding-block:12px;
+  }
+  .done-screen .big{font-size:40px;}
+
+  dialog#refModal{
+    border:none;border-radius:16px;padding:0;max-width:480px;width:calc(100% - 32px);
+    background:var(--surface);color:var(--ink);
+  }
+  dialog#refModal::backdrop{background:rgba(10,14,7,.55);}
+  .modalpad{padding:20px;display:flex;flex-direction:column;gap:12px;}
+  .modalpad h2{font-size:18px;}
+  .closeRow{display:flex;justify-content:flex-end;}
+
+  footer{max-width:760px;margin:0 auto;padding-block:8px 32px;color:var(--muted);font-size:12.5px;line-height:1.7;}
+
+  @media (max-width:480px){
+    .stage{padding:16px;border-radius:14px;}
+    .stage h2{font-size:19px;}
+  }
+</style>
+
+<header class="top">
+  <div class="top-row">
+    <div class="brand">
+      <span class="mark">🌽</span>
+      <div>
+        <h1>สืบหาไวรัส — ข้าวโพด</h1>
+        <p>9 เคส · รูปแบบการกระจาย → ตำแหน่งบนต้น → อ่านลายรอยโรค → แว่นขยาย+จัดกลุ่ม → วางแผนเก็บตัวอย่าง</p>
+      </div>
+    </div>
+    <button class="ref-btn" id="openRef" type="button">หลักการสั่งตรวจแล็บ</button>
+  </div>
+  <div class="chiprow" id="chiprow"></div>
+</header>
+
+<main>
+  <div class="progress" id="progress"></div>
+  <div class="stage" id="stage"></div>
+</main>
+
+<footer>
+  ภาพประกอบใช้เพื่อการฝึกอบรมเท่านั้น อ้างอิงลักษณะอาการจากคู่มือตรวจแปลงข้าวโพดและวรรณกรรมโรคพืชที่เกี่ยวข้อง
+  การยืนยันชนิดเชื้อสุดท้ายต้องอาศัยผลตรวจห้องปฏิบัติการเสมอ
+</footer>
+
+<dialog id="refModal">
+  <div class="modalpad">
+    <div class="eyebrow" style="color:var(--info)">หลักการทั่วไป — ใช้ได้ทุกเคส</div>
+    <h2>เขียนใบส่งตรวจไวรัสข้าวโพด มีแค่ 2 ทาง</h2>
+    <div class="path">
+      <b>ทางที่ 1 — กลุ่ม RNA virus (8 ใน 9 ชนิดในบัญชี)</b>
+      MCMV, SCMV, MDMV, MMV, HPWMoV, MRFV, WSMV, MCDV — ตรวจด้วยแพลตฟอร์มเดียวกัน ระบุรวมกันในใบส่งตรวจฉบับเดียวได้ ไม่ต้องแยกคำสั่ง
+    </div>
+    <div class="path">
+      <b>ทางที่ 2 — MSV (ข้อยกเว้นเดียว)</b>
+      เป็น DNA virus (Geminiviridae) ตรวจคนละแพลตฟอร์ม ต้องแยกใบส่งตรวจต่างหากเสมอ ถ้าสงสัยร่วมกับชนิดในทางที่ 1 ให้ส่งสองคำสั่งแยกกัน
+    </div>
+    <p style="margin:0;font-size:13.5px;color:var(--muted)">ไม่ว่าอาการที่พบจะเป็น mottle, streak หรือ stunt/dwarf กฎการเขียนคำสั่งตรวจมีแค่สองทางนี้เสมอ</p>
+    <div class="path" style="margin-top:10px">
+      <b>ข้อมูลที่ต้องระบุในใบส่งตรวจให้ครบ</b>
+      (1) กลุ่มอาการที่สังเกตได้ (mottle/streak/stunt-dwarf) (2) ทางตรวจ RNA หรือ DNA ตามด้านบน และ (3) รายชื่อประเทศปลายทางที่จะส่งออกเมล็ดพันธุ์ล็อตนี้ — เพราะรายชื่อไวรัสที่แต่ละประเทศคู่ค้ากำหนดไว้ในเงื่อนไขใบอนุญาตนำเข้าไม่เหมือนกันทุกประเทศ ห้องปฏิบัติการจะเลือกตรวจเฉพาะชนิดที่ประเทศปลายทางนั้นกำหนดไว้เท่านั้น ทั้งสามข้อนี้รวมกันเพียงพอสำหรับผู้ตรวจในการระบุตัวอย่างและสั่งตรวจแล็บได้ถูกต้อง โดยไม่จำเป็นต้องฟันธงเองว่าเป็นไวรัสชนิดใดชนิดหนึ่ง
+    </div>
+    <div class="closeRow"><button class="btn ghost" id="closeRef" type="button">ปิด</button></div>
+  </div>
+</dialog>
+
+<script>
+(function(){
+  "use strict";
+
+  // ---------- shared option pools ----------
+  var MAG_INSIGHT = "การส่องแว่นขยายช่วยให้ทบทวนได้อีกครั้งว่า “เป็นไวรัสหรือไม่” จากลักษณะขอบแผล ขนาด และเส้นทางของรอยโรคบนใบ";
+
+  var REF_HTML =
+    '<div class="path"><b>ทางที่ 1 — กลุ่ม RNA virus (8 ใน 9 ชนิดในบัญชี)</b>'+
+    'MCMV, SCMV, MDMV, MMV, HPWMoV, MRFV, WSMV, MCDV — ตรวจด้วยแพลตฟอร์มเดียวกัน ระบุรวมกันในใบส่งตรวจฉบับเดียวได้ ไม่ต้องแยกคำสั่ง</div>'+
+    '<div class="path"><b>ทางที่ 2 — MSV (ข้อยกเว้นเดียว)</b>'+
+    'เป็น DNA virus (Geminiviridae) ตรวจคนละแพลตฟอร์ม ต้องแยกใบส่งตรวจต่างหากเสมอ ถ้าสงสัยร่วมกับชนิดในทางที่ 1 ให้ส่งสองคำสั่งแยกกัน</div>'+
+    '<p style="margin:0;font-size:13.5px;color:var(--muted)">ไม่ว่าอาการที่พบจะเป็น mottle, streak หรือ stunt/dwarf กฎการเขียนคำสั่งตรวจมีแค่สองทางนี้เสมอ</p>'+
+    '<div class="path" style="margin-top:10px"><b>ข้อมูลที่ต้องระบุในใบส่งตรวจให้ครบ</b>'+
+    '(1) กลุ่มอาการที่สังเกตได้ (mottle/streak/stunt-dwarf) (2) ทางตรวจ RNA หรือ DNA ตามด้านบน และ (3) รายชื่อประเทศปลายทางที่จะส่งออกเมล็ดพันธุ์ล็อตนี้ — เพราะรายชื่อไวรัสที่แต่ละประเทศคู่ค้ากำหนดไว้ในเงื่อนไขใบอนุญาตนำเข้าไม่เหมือนกันทุกประเทศ ห้องปฏิบัติการจะเลือกตรวจเฉพาะชนิดที่ประเทศปลายทางนั้นกำหนดไว้เท่านั้น ทั้งสามข้อนี้รวมกันเพียงพอสำหรับผู้ตรวจในการระบุตัวอย่างและสั่งตรวจแล็บได้ถูกต้อง โดยไม่จำเป็นต้องฟันธงเองว่าเป็นไวรัสชนิดใดชนิดหนึ่ง</div>';
+
+  // Step 0 — Q1: รูปแบบการกระจายของอาการในแปลง (ใช้ซ้ำทุกเคส เลือกเฉพาะดัชนีที่ถูก)
+  var FIELD_Q = "จากที่เดินตรวจทั้งแปลง รูปแบบการกระจายของอาการผิดปกติที่พบเป็นแบบใด?";
+  var FIELD_POOL = [
+    "กระจายเป็นหย่อม ๆ ไม่สม่ำเสมอทั่วแปลง ไม่เรียงตามแนวขอบหรือแนวปลูก",
+    "หนาแน่นตามแนวขอบแปลงที่ติดกับวัชพืช/พืชอาศัยสำรอง แล้วค่อยลามเข้ากลางแปลง",
+    "ต้นกล้างอกและเจริญปกติดี แล้วจึงเริ่มพบอาการผิดปกติและลามเพิ่มขึ้นในระยะต่อมา โดยไม่สัมพันธ์ชัดเจนกับแนวขอบแปลงหรือแหล่งอาศัยสำรอง",
+    "กระจายเป็นแถบตามแนวร่องน้ำ/ทางระบายน้ำ หรือตามสภาพดิน มากกว่าตามตำแหน่งของพาหะ"
+  ];
+
+  // ขั้นแว่นขยาย ปิดท้ายด้วยกลุ่มเทคนิค (เลือกได้มากกว่า 1)
+  var TECH_GROUP_POOL = [
+    {id:"mottle", label:"mottle / mosaic", desc:"ปื้น/แต้มสีซีดกระจายไม่เป็นเส้นตรง หรือด่างเป็นบริเวณกว้าง", viruses:"MCMV, SCMV, MDMV, MMV, HPWMoV, WSMV"},
+    {id:"streak", label:"streak / stripe", desc:"เส้นขีด/ทางยาวขนานเส้นใบ ขาดช่วงหรือต่อเนื่อง", viruses:"MRFV, MSV"},
+    {id:"stunt",  label:"stunt / dwarf / malform", desc:"ต้นแคระ/ผิดรูปเป็นเอกลักษณ์ตั้งแต่เริ่มผิดปกติ (ไม่ใช่แค่ผลสะสมตอนอายุมากขึ้นแบบไวรัสทั่วไป)", viruses:"MDMV, MRFV, MCDV"}
+  ];
+
+  // ขั้นวางแผนเก็บตัวอย่าง — ติ๊กได้ไม่จำกัดทั้งสองส่วน
+  var SAMPLE_POS_POOL = [
+    "ใบที่แสดงอาการชัดเจนที่สุดในต้น",
+    "ใบอ่อน/ใบยอด (บริเวณยอดที่เพิ่งคลี่ใหม่)",
+    "ใบแก่/ใบล่างของต้น",
+    "กาบใบ (leaf sheath)",
+    "เปลือกฝัก (husk)",
+    "เมล็ดที่ปลายฝัก",
+    "ราก"
+  ];
+  var LAB_METHOD_POOL = [
+    "ELISA",
+    "Immunochromatographic strip test (เช่น Agdia PathoScreen® สำหรับ WSMV)",
+    "RT-PCR (ตรวจ RNA virus)",
+    "PCR (ตรวจ DNA virus)",
+    "LAMP",
+    "Vector specificity test (ทดสอบผ่านพาหะจำเพาะ)"
+  ];
+
+  // ---------- 9 เคส (เรียงกระจายกลุ่มอาการ: ขีด/มอทเทิล/แคระ สลับกัน ไม่เรียงตามความยาก) ----------
+  var CASES = [
+    {code:"MRFV", nameTh:"โรคใบขีดละเอียดข้าวโพด", nameEn:"Maize Rayado Fino Virus",
+     img:"images/mrfv.jpg", genome:"RNA", techGroup:["streak","stunt"],
+     fieldOk:0,
+     q2:{
+       q:"ลักษณะทั้งต้นข้าวโพดที่พบอาการใบผิดปกติ เป็นแบบใด?",
+       options:[
+         {ok:true, text:"จุดด่าง/เส้นละเอียด (fine streak) สีขาวถึงเหลืองอ่อนละเอียด เริ่มจากโคนใบลามไปทั่วใบขนานเส้นใบ ต้นโตช้าและเล็กกว่าปกติ ผลผลิตต่ำ ใบอาจม้วนหรือหงิกงอ"},
+         {ok:false,text:"ใบเปลี่ยนเป็นสีแดงหรือม่วงแดงชัดเจนทั่วต้น ต้น stunt/dwarf รุนแรงตั้งแต่ระยะกล้า"},
+         {ok:false,text:"ปื้นด่างประ (mottle) เขียวเข้ม–อ่อนสลับกันกระจายทั่วใบแบบไม่มีทิศทางชัดเจน ต้นสูงเกือบปกติ"},
+         {ok:false,text:"ต้นสูงสมบูรณ์ปกติทุกด้าน มีเพียงจุดเล็ก ๆ จุดเดียวบนใบหนึ่งใบ"}
+       ]},
+     lesion:{
+       primary:{q:"ลักษณะรอยโรคบนใบที่เห็นเป็นแบบใด?", options:[
+         {ok:true, text:"แผลขีด (streak) สั้นเรียงถี่"},
+         {ok:false,text:"ปื้นด่างประ (mottle) สีเขียวเข้ม-เขียวอ่อนสลับกัน"},
+         {ok:false,text:"ปื้นยาวสีขาว-เหลืองจัด (ไม่ปนเขียว)"},
+         {ok:false,text:"ปื้นด่างขนานละเอียด (ลักษณะขาดธาตุแมงกานีส)"}
+       ]},
+       continuity:{q:"ความต่อเนื่องของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"ขาดช่วงสม่ำเสมอ"},
+         {ok:false,text:"ไม่ต่อเนื่อง/ขาดช่วง"},
+         {ok:false,text:"ต่อเนื่องยาว (โคนใบถึงปลายใบ)"},
+         {ok:false,text:"ต่อเนื่อง"}
+       ]},
+       width:{q:"ความกว้างของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"แคบคงที่"},
+         {ok:false,text:"ไม่สม่ำเสมอ (ปื้นขนาดต่างกัน บางจุดเชื่อมกัน)"},
+         {ok:false,text:"ไม่สม่ำเสมอ (จุดกระปนปื้นยาว)"},
+         {ok:false,text:"กว้างไม่สม่ำเสมอ"}
+       ]},
+       arrangement:{q:"การเรียงตัวของรอยโรคบนใบ เป็นแบบใด?", options:[
+         {ok:true, text:"ขนานเส้นใบ"},
+         {ok:false,text:"หย่อมกระจายขนานแนวเส้นใบ"},
+         {ok:false,text:"กระจาย เริ่มจากขอบ/ปลายใบส่วนล่าง"},
+         {ok:false,text:"ขนานเส้นกลางใบ (ลักษณะขาดธาตุสังกะสี)"}
+       ]}
+     },
+     magQ:"ส่องแว่นขยาย 20x ที่ขอบรอยโรค ขนาด และเส้นทางของรอยขีดของแผลบนใบ สิ่งที่เห็นเป็นแบบใด?",
+     magOptions:[
+       {ok:true, text:"ขอบรอยจาง ไม่มีขอบเขตแน่นอน เส้นทางขนานเส้นใบเป็นระเบียบ ขนาดสม่ำเสมอทุกจุด"},
+       {ok:false,text:"ขอบปื้นซีดกระจายไม่มีรูปแบบ ไล่ระดับจากใบแก่ไปใบอ่อน (หรือกลับกัน) ตามตำแหน่งใบ"},
+       {ok:false,text:"รอยด่างปนกับอาการต้นแตกยอดพุ่มผิดปกติ ใบเล็กลงเป็นกระจุกที่ยอด (witches'-broom)"},
+       {ok:false,text:"ยังสรุปไม่ได้ชัดจากภาพนี้ ต้องส่องจากใบจริงในแปลง"}
+     ],
+     sampleARec:[0], sampleMethodRec:[0,2],
+     fact:"MRFV เป็นตัวแทนของ Marafivirus ที่เพิ่มจำนวนในตัวพาหะ (Dalbulus maidis) และพาหะแพร่เชื้อได้ตลอดชีวิต แต่จะไม่ถ่ายทอดเชื้อผ่านไข่ไปสู่เพลี้ยรุ่นลูก อาการต้นโตช้า/เล็กกว่าปกติเป็นเอกลักษณ์ตั้งแต่เริ่มผิดปกติ จึงจัดอยู่ในกลุ่ม stunt/dwarf ด้วย"},
+
+    {code:"MCMV", nameTh:"โรคใบด่างประจุดเหลืองข้าวโพด", nameEn:"Maize Chlorotic Mottle Virus",
+     img:"images/mcmv.jpg", genome:"RNA", techGroup:["mottle"],
+     fieldOk:2,
+     q2:{
+       q:"ลักษณะทั้งต้นข้าวโพดที่พบอาการใบผิดปกติ เป็นแบบใด?",
+       options:[
+         {ok:true, text:"ใบเริ่มซีดเหลืองเป็นแถบขนานเส้นใบ แล้วเชื่อมเป็นปื้นเหลืองยาว จนเนื้อเยื่อตายและใบโค้งงอผิดปกติ ต้นแคระ ปล้องสั้น ช่อดอกตัวผู้/ฝักผิดรูป"},
+         {ok:false,text:"ต้นตายยกแปลงทั้งหมดตั้งแต่ระยะกล้าอย่างรวดเร็ว"},
+         {ok:false,text:"ใบด่างขึด (streak) สั้น สีขาวเหลืองขนานเส้นใบ ไม่มีอาการแคระ"},
+         {ok:false,text:"ต้นสูงปกติ ฝักสมบูรณ์ มีเพียงสีใบผิดปกติเล็กน้อย"}
+       ]},
+     lesion:{
+       primary:{q:"ลักษณะรอยโรคบนใบที่เห็นเป็นแบบใด?", options:[
+         {ok:true, text:"ปื้นด่างประ (mottle) สีเขียวเข้ม-เขียวอ่อนสลับกัน"},
+         {ok:false,text:"แถบด่างเขียวอ่อน-เหลือง ขนานแกนกลางใบ เชื่อมเป็นปื้น"},
+         {ok:false,text:"ด่างขึด (streak) สั้น เรียงถี่"},
+         {ok:false,text:"ปื้นด่างกว้าง (ลักษณะขาดธาตุเหล็ก)"}
+       ]},
+       continuity:{q:"ความต่อเนื่องของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"ไม่ต่อเนื่อง/ขาดช่วง"},
+         {ok:false,text:"ต่อเนื่อง (เชื่อมรวมจากโคนใบถึงปลายใบ)"},
+         {ok:false,text:"ขาดช่วงสม่ำเสมอ"},
+         {ok:false,text:"ต่อเนื่องทั่วใบ (ลักษณะขาดธาตุกำมะถัน)"}
+       ]},
+       width:{q:"ความกว้างของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"ไม่สม่ำเสมอ (ปื้นขนาดต่างกัน บางจุดเชื่อมกัน)"},
+         {ok:false,text:"แคบคงที่"},
+         {ok:false,text:"กว้างไม่สม่ำเสมอ"},
+         {ok:false,text:"กว้างมาก (ลักษณะขาดธาตุสังกะสี)"}
+       ]},
+       arrangement:{q:"การเรียงตัวของรอยโรคบนใบ เป็นแบบใด?", options:[
+         {ok:true, text:"หย่อมกระจายขนานแนวเส้นใบ"},
+         {ok:false,text:"ขนานเส้นใบ"},
+         {ok:false,text:"กระจาย เริ่มจากขอบ/ปลายใบส่วนล่าง"},
+         {ok:false,text:"ขนานเส้นกลางใบ (ลักษณะขาดธาตุสังกะสี)"}
+       ]}
+     },
+     magQ:"ส่องแว่นขยาย 20x ที่ขอบรอยโรค ขนาด และเส้นทางของรอย mottle บนใบ สิ่งที่เห็นเป็นแบบใด?",
+     magOptions:[
+       {ok:true, text:"ปื้นเหลืองขนานเส้นใบ ขอบไม่คมแต่มีทิศทางตามแนวเส้นใบชัดเจน บางจุดเริ่มมีเนื้อเยื่อตายเป็นขอบไม่สม่ำเสมอ"},
+       {ok:false,text:"ปื้นซีดขอบเบลอไล่ระดับจากปลายใบเข้ามา สมมาตรทั้งสองข้างใบเท่ากันทุกใบ"},
+       {ok:false,text:"ปื้นด่างปนกับอาการก้านใบสั้นผิดปกติและใบเปลี่ยนเป็นสีเขียวผิดธรรมชาติที่ส่วนดอก (virescence)"},
+       {ok:false,text:"ยังสรุปไม่ได้ชัดจากภาพนี้ ต้องส่องจากใบจริงในแปลง"}
+     ],
+     sampleARec:[0], sampleMethodRec:[0],
+     fact:"MCMV เพียงลำพังมักไม่รุนแรงมาก แต่ถ้าติดร่วมกับโพทีไวรัสตัวอื่น (เช่น MDMV, SCMV, WSMV) จะกลายเป็น Corn Lethal Necrosis (CLN) ที่ทำให้ต้นตายทั้งแปลงตั้งแต่ระยะแรก อาการแคระที่พบใน MCMV เป็นผลสะสมเมื่อลุกลาม ไม่ใช่เอกลักษณ์ตั้งแต่ต้น จึงไม่จัดอยู่กลุ่ม stunt/dwarf"},
+
+    {code:"MCDV", nameTh:"โรคใบซีดแคระข้าวโพด", nameEn:"Maize Chlorotic Dwarf Virus",
+     img:"images/mcdv.jpg", genome:"RNA", techGroup:["stunt"],
+     fieldOk:0,
+     q2:{
+       q:"ลักษณะทั้งต้นข้าวโพดที่พบอาการใบผิดปกติ เป็นแบบใด?",
+       options:[
+         {ok:true, text:"ต้นแคระแกรน (stunt/dwarf) ชัดเจน ปล้องสั้น ใบซีดหรือเปลี่ยนเป็นสีแดง/ม่วงแดง ใบม้วนบิดฉีกขาด อาการเด่นชัดที่ใบอ่อนช่วงยอดม้วน (whorl stage)"},
+         {ok:false,text:"ใบด่างประ (mottle) สีเขียวเข้ม–อ่อนสลับกัน ต้นสูงเกือบปกติ"},
+         {ok:false,text:"ใบ streak ขาวละเอียดขนานเส้นใบ ต้นไม่แคระ"},
+         {ok:false,text:"ทุกต้นในแปลงแคระเท่ากันตั้งแต่วันปลูก สม่ำเสมอทั้งแปลง"}
+       ]},
+     lesion:{
+       primary:{q:"ลักษณะรอยโรคบนใบที่เห็นเป็นแบบใด?", options:[
+         {ok:true, text:"แถบเหลือง/ซีดตามเส้นใบ (บางต้นเปลี่ยนแดง-ม่วงแดง)"},
+         {ok:false,text:"ด่างขีด (streak) สั้น เรียงถี่"},
+         {ok:false,text:"ปื้นด่างประ (mottle) สีเขียวเข้ม-เขียวอ่อนสลับกัน"},
+         {ok:false,text:"ปื้นด่างกว้างไม่สมมาตร (ลักษณะขาดธาตุสังกะสี)"}
+       ]},
+       continuity:{q:"ความต่อเนื่องของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"ต่อเนื่อง"},
+         {ok:false,text:"ขาดช่วงสม่ำเสมอ"},
+         {ok:false,text:"ไม่ต่อเนื่อง/ขาดช่วง"},
+         {ok:false,text:"ขาดช่วง (ระยะแรก) → ต่อเนื่อง (ระยะรุนแรง)"}
+       ]},
+       width:{q:"ความกว้างของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"แคบคงที่"},
+         {ok:false,text:"ไม่สม่ำเสมอ (ปื้นขนาดต่างกัน บางจุดเชื่อมกัน)"},
+         {ok:false,text:"กว้างไม่สม่ำเสมอ"},
+         {ok:false,text:"ไม่สม่ำเสมอ (จุดกระปนปื้นยาว)"}
+       ]},
+       arrangement:{q:"การเรียงตัวของรอยโรคบนใบ เป็นแบบใด?", options:[
+         {ok:true, text:"ขนานเส้นใบ"},
+         {ok:false,text:"หย่อมกระจายขนานแนวเส้นใบ"},
+         {ok:false,text:"กระจาย เริ่มจากขอบ/ปลายใบส่วนล่าง"},
+         {ok:false,text:"ขนานเส้นกลางใบ (ลักษณะขาดธาตุสังกะสี)"}
+       ]}
+     },
+     magQ:"ส่องแว่นขยาย 20x ที่ขอบรอยโรค ขนาด และเส้นทางของลายบนใบ สิ่งที่เห็นเป็นแบบใด?",
+     magOptions:[
+       {ok:true, text:"เส้นใบซีดเป็นแถบเหลืองหรือซีดตามแนวเส้นใบ ร่วมกับเนื้อใบรอบข้างบิดม้วนและมีรอยฉีกขาดตามแนวที่ใบม้วนงอ"},
+       {ok:false,text:"ปื้นซีดขอบเบลอ ไล่ระดับตามอายุใบ (ใบแก่ซีดกว่าใบอ่อนหรือกลับกัน) ไม่มีอาการม้วนบิดของเนื้อใบ"},
+       {ok:false,text:"ต้นแตกยอดเป็นพุ่มผิดปกติ ใบเล็กเป็นกระจุกที่ยอด ร่วมกับดอกกลายเป็นใบ (phyllody)"},
+       {ok:false,text:"ยังสรุปไม่ได้ชัดจากภาพนี้ ต้องส่องจากใบจริงในแปลง"}
+     ],
+     sampleARec:[0,1], sampleMethodRec:[0,2],
+     fact:"MCDV แพร่ผ่านเพลี้ยจักจั่นแบบกึ่งถาวร (semi-persistent) คงอยู่ในตัวพาหะได้เพียงไม่กี่ชั่วโมงถึง 1-2 วัน ต่างจาก MRFV ที่แพร่แบบถาวรตลอดชีวิตพาหะ และ MCDV ไม่ถ่ายทอดผ่านเมล็ดพันธุ์ อาการเด่นชัดที่สุดช่วงใบอ่อนม้วนตัว (whorl stage) จึงควรเก็บตัวอย่างจากใบอ่อน/ใบยอดร่วมด้วย"},
+
+    {code:"SCMV", nameTh:"โรคใบด่างขีดข้าวโพด", nameEn:"Sugarcane Mosaic Virus",
+     img:"images/scmv.jpg", genome:"RNA", techGroup:["mottle"],
+     fieldOk:0,
+     q2:{
+       q:"ลักษณะทั้งต้นข้าวโพดที่พบอาการใบผิดปกติ เป็นแบบใด?",
+       options:[
+         {ok:true, text:"ใบด่างเป็นแต้มสีซีดกระจายทั่วใบ หรือเป็นแถบสีซีดยาว ต่อมายอดและใบเริ่มไหม้ ลำต้นแคระแกร็น (stunt/dwarf) ฝักติดเมล็ดไม่สมบูรณ์ (อาการใบไหม้/ยอดหดมักเกิดช่วงหลังผสมเกสรแล้ว จึงไม่ใช่ตัวชี้วัดหลักในการตรวจแปลงช่วงต้น)"},
+         {ok:false,text:"ใบ streak ขาวละเอียดขนานเส้นใบ ไม่มีอาการด่างเป็นแต้ม"},
+         {ok:false,text:"ต้นแคระรุนแรงตั้งแต่ระยะกล้า ใบเปลี่ยนเป็นสีแดงม่วงชัดเจนทั่วต้น"},
+         {ok:false,text:"ต้นสูงปกติทุกด้าน ฝักสมบูรณ์เต็มเมล็ด"}
+       ]},
+     lesion:{
+       primary:{q:"ลักษณะรอยโรคบนใบที่เห็นเป็นแบบใด?", options:[
+         {ok:true, text:"ปื้นด่างประ (mottle) สีเขียวเข้ม-เขียวอ่อนสลับกัน"},
+         {ok:false,text:"แถบด่างเขียวอ่อน-เหลือง ขนานแกนกลางใบ เชื่อมเป็นปื้น"},
+         {ok:false,text:"ด่างขีด (streak) สั้น เรียงถี่"},
+         {ok:false,text:"ปื้นด่างกว้าง (ลักษณะขาดธาตุเหล็ก)"}
+       ]},
+       continuity:{q:"ความต่อเนื่องของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"ไม่ต่อเนื่อง/ขาดช่วง"},
+         {ok:false,text:"ต่อเนื่อง (เชื่อมรวมจากโคนใบถึงปลายใบ)"},
+         {ok:false,text:"ขาดช่วงสม่ำเสมอ"},
+         {ok:false,text:"ต่อเนื่องทั่วใบ (ลักษณะขาดธาตุกำมะถัน)"}
+       ]},
+       width:{q:"ความกว้างของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"ไม่สม่ำเสมอ (ปื้นขนาดต่างกัน บางจุดเชื่อมกัน)"},
+         {ok:false,text:"แคบคงที่"},
+         {ok:false,text:"กว้างไม่สม่ำเสมอ"},
+         {ok:false,text:"กว้างมาก (ลักษณะขาดธาตุสังกะสี)"}
+       ]},
+       arrangement:{q:"การเรียงตัวของรอยโรคบนใบ เป็นแบบใด?", options:[
+         {ok:true, text:"หย่อมกระจายขนานแนวเส้นใบ"},
+         {ok:false,text:"ขนานเส้นใบ"},
+         {ok:false,text:"กระจาย เริ่มจากขอบ/ปลายใบส่วนล่าง"},
+         {ok:false,text:"ขนานเส้นกลางใบ (ลักษณะขาดธาตุสังกะสี)"}
+       ]}
+     },
+     magQ:"ส่องแว่นขยาย 20x ที่ขอบรอยโรค ขนาด และเส้นทางของรอยด่างประบนใบ สิ่งที่เห็นเป็นแบบใด?",
+     magOptions:[
+       {ok:true, text:"แต้มสีซีดขนาดไม่สม่ำเสมอกระจายแบบไม่มีทิศทางตายตัว ปะปนกับส่วนใบสีเขียวเข้มปกติ ขอบแต้มไม่คมแต่แยกจากเนื้อใบปกติได้ชัด"},
+       {ok:false,text:"ปื้นซีดขอบเบลอมาก ไล่ระดับสมมาตรตามตำแหน่งใบทั้งสองข้าง ไม่มีลักษณะแต้มกระจายแบบสุ่ม"},
+       {ok:false,text:"ปื้นด่างปนกับก้านใบและปล้องสั้นผิดปกติ ร่วมกับส่วนดอกเปลี่ยนเป็นสีเขียวผิดธรรมชาติ"},
+       {ok:false,text:"ยังสรุปไม่ได้ชัดจากภาพนี้ ต้องส่องจากใบจริงในแปลง"}
+     ],
+     sampleARec:[0], sampleMethodRec:[0,2],
+     fact:"SCMV แพร่ผ่านเพลี้ยอ่อนแบบไม่ถาวร (non-persistent) และมีอาการเหมือน MDMV มากจนแยกด้วยตาแทบไม่ได้ — ดูเคส MDMV ประกอบ อาการแคระใน SCMV เป็นผลสะสมช่วงหลัง ไม่ใช่เอกลักษณ์ตั้งแต่ต้น จึงไม่จัดกลุ่ม stunt/dwarf"},
+
+    {code:"MSV", nameTh:"โรคใบขีดข้าวโพด", nameEn:"Maize Streak Virus",
+     img:"images/msv.jpg", genome:"DNA", techGroup:["streak"],
+     fieldOk:0,
+     q2:{
+       q:"ลักษณะทั้งต้นข้าวโพดที่พบอาการใบผิดปกติ เป็นแบบใด?",
+       options:[
+         {ok:true, text:"ใบซีดเป็นจุดกระหรือปื้นยาวสีขาวถึงเหลืองจัด ขนานเส้นใบตั้งแต่โคนถึงปลายใบ ใบหงิกงอบิดเบี้ยว ช่อดอกผิดรูปไม่ผสมพันธุ์ ฝักเล็กผิดปกติหรือไม่ติดฝัก"},
+         {ok:false,text:"ใบเปลี่ยนเป็นสีแดง/ม่วงแดงทั่วต้น ต้นแคระรุนแรงตั้งแต่ระยะกล้า"},
+         {ok:false,text:"ใบด่างเขียวเข้ม–อ่อนสลับกันแบบไม่มีทิศทาง ด่างประ  (mottle) กระจายทั่วใบ"},
+         {ok:false,text:"ต้นปกติทุกด้าน ติดฝักสมบูรณ์ มีเพียงจุดเล็กน้อยที่ปลายใบ"}
+       ]},
+     lesion:{
+       primary:{q:"ลักษณะรอยโรคบนใบที่เห็นเป็นแบบใด?", options:[
+         {ok:true, text:"ปื้นยาวสีขาว-เหลืองจัด (ไม่ปนเขียว)"},
+         {ok:false,text:"ด่างขีด (streak) สั้น เรียงถี่"},
+         {ok:false,text:"ปื้นด่างประ (mottle) สีเขียวเข้ม-เขียวอ่อนสลับกัน"},
+         {ok:false,text:"ปื้นด่างเกือบขาว (ลักษณะขาดธาตุเหล็กรุนแรง)"}
+       ]},
+       continuity:{q:"ความต่อเนื่องของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"ต่อเนื่องยาว (โคนใบถึงปลายใบ)"},
+         {ok:false,text:"ขาดช่วงสม่ำเสมอ"},
+         {ok:false,text:"ไม่ต่อเนื่อง/ขาดช่วง"},
+         {ok:false,text:"ต่อเนื่อง"}
+       ]},
+       width:{q:"ความกว้างของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"ไม่สม่ำเสมอ (จุดกระปนปื้นยาว)"},
+         {ok:false,text:"แคบคงที่"},
+         {ok:false,text:"ไม่สม่ำเสมอ (ปื้นขนาดต่างกัน บางจุดเชื่อมกัน)"},
+         {ok:false,text:"กว้างไม่สม่ำเสมอ"}
+       ]},
+       arrangement:{q:"การเรียงตัวของรอยโรคบนใบ เป็นแบบใด?", options:[
+         {ok:true, text:"ขนานเส้นใบ"},
+         {ok:false,text:"หย่อมกระจายขนานแนวเส้นใบ"},
+         {ok:false,text:"กระจาย เริ่มจากขอบ/ปลายใบส่วนล่าง"},
+         {ok:false,text:"ขนานเส้นกลางใบ (ลักษณะขาดธาตุสังกะสี)"}
+       ]}
+     },
+     magQ:"ส่องแว่นขยาย 20x ที่ขอบรอยโรค ขนาด และเส้นทางของรอยแผลขึดบนใบ สิ่งที่เห็นเป็นแบบใด?",
+     magOptions:[
+       {ok:true, text:"เส้นขาวถึงเหลืองจัดขาดช่วงเป็นระเบียบ ขนานเส้นใบตลอดความยาวใบ ขอบเส้นคมชัดแยกจากเนื้อใบปกติ"},
+       {ok:false,text:"ปื้นซีดขอบเบลอไล่ระดับตามอายุใบ ไม่มีเส้นขาดช่วงเป็นระเบียบ"},
+       {ok:false,text:"ลายปนกับอาการช่อดอกกลายเป็นใบ (phyllody) หรือต้นแตกยอดพุ่มผิดปกติ"},
+       {ok:false,text:"ยังสรุปไม่ได้ชัดจากภาพนี้ ต้องส่องจากใบจริงในแปลง"}
+     ],
+     sampleARec:[0], sampleMethodRec:[0,3,4],
+     fact:"คู่มือระบุ MSV เป็น RNA virus แต่ตามอนุกรมวิธานสากล (ICTV) MSV อยู่ในวงศ์ Geminiviridae ซึ่งมีจีโนมเป็น ssDNA ไม่ใช่ RNA — เป็นข้อมูลที่ต่างจากไวรัสข้าวโพดอีก 8 ชนิดในบัญชีซึ่งเป็น RNA virus ทั้งหมด นี่คือเหตุผลที่ MSV ต้องแยกใบส่งตรวจเสมอ และควรใช้ PCR (ไม่ใช่ RT-PCR) แม้คู่มือจะระบุ RT-PCR ไว้ในบัญชีวิธีวินิจฉัยด้วยก็ตาม — เป็นจุดที่คู่มือไม่สอดคล้องกันเองกับชีววิทยาจริงของไวรัสกลุ่มนี้"},
+
+    {code:"MMV", nameTh:"โรคใบด่างข้าวโพด", nameEn:"Maize Mosaic Virus",
+     img:"images/mmv.jpg", genome:"RNA", techGroup:["mottle"],
+     fieldOk:3,
+     q2:{
+       q:"ลักษณะทั้งต้นข้าวโพดที่พบอาการใบผิดปกติ เป็นแบบใด?",
+       options:[
+         {ok:true, text:"ใบด่างเป็นแถบเขียวอ่อนถึงเหลืองขนานแกนกลางใบ เริ่มจากโคนใบลามไปปลายใบ กาบใบและเปลือกฝักด่างด้วย ต้นแคระ ปล้องสั้น ฝักเล็กไม่สมบูรณ์"},
+         {ok:false,text:"ใบด่างขีด (streak) สีขาวละเอียดขนานเส้นใบ ไม่มีอาการที่กาบใบหรือเปลือกฝัก"},
+         {ok:false,text:"ใบเปลี่ยนสีแดงม่วงทั่วต้น ใบม้วนบิดฉีกขาด"},
+         {ok:false,text:"ต้นสูงปกติ กาบใบและเปลือกฝักปกติสมบูรณ์"}
+       ]},
+     lesion:{
+       primary:{q:"ลักษณะรอยโรคบนใบที่เห็นเป็นแบบใด?", options:[
+         {ok:true, text:"แถบด่างเขียวอ่อน-เหลือง ขนานแกนกลางใบ เชื่อมเป็นปื้น"},
+         {ok:false,text:"ปื้นด่างประ (mottle) สีเขียวเข้ม-เขียวอ่อนสลับกัน"},
+         {ok:false,text:"ด่างขีด (streak) สั้นเรียงถี่"},
+         {ok:false,text:"ปื้นด่างเกือบขาว (ลักษณะขาดธาตุเหล็กรุนแรง)"}
+       ]},
+       continuity:{q:"ความต่อเนื่องของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"ต่อเนื่อง (เชื่อมรวมจากโคนใบถึงปลายใบ)"},
+         {ok:false,text:"ไม่ต่อเนื่อง/ขาดช่วง"},
+         {ok:false,text:"ขาดช่วงสม่ำเสมอ"},
+         {ok:false,text:"ต่อเนื่องทั่วใบ (ลักษณะขาดธาตุกำมะถัน)"}
+       ]},
+       width:{q:"ความกว้างของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"คงที่แคบ ไม่สม่ำเสมอเมื่อเชื่อมกัน"},
+         {ok:false,text:"ไม่สม่ำเสมอ (ปื้นขนาดต่างกัน บางจุดเชื่อมกัน)"},
+         {ok:false,text:"แคบคงที่"},
+         {ok:false,text:"กว้างมาก (ลักษณะขาดธาตุสังกะสี)"}
+       ]},
+       arrangement:{q:"การเรียงตัวของรอยโรคบนใบ เป็นแบบใด?", options:[
+         {ok:true, text:"ขนานเส้นใบ"},
+         {ok:false,text:"หย่อมกระจายขนานแนวเส้นใบ"},
+         {ok:false,text:"กระจาย เริ่มจากขอบ/ปลายใบส่วนล่าง"},
+         {ok:false,text:"ขนานเส้นกลางใบ (ลักษณะขาดธาตุสังกะสี)"}
+       ]}
+     },
+     magQ:"ส่องแว่นขยาย 20x ที่ขอบรอยโรค ขนาด และเส้นทางของรอยด่างประบนใบ สิ่งที่เห็นเป็นแบบใด?",
+     magOptions:[
+       {ok:true, text:"แถบด่างเขียวอ่อนถึงเหลืองขนานแกนกลางใบ ขอบแถบไม่คมแต่มีทิศทางชัดเจนตามแนวเส้นกลางใบ ขนาดขยายจากโคนใบไปปลายใบต่อเนื่อง"},
+       {ok:false,text:"ปื้นซีดขอบเบลอ ไล่ระดับสมมาตรตามตำแหน่งใบ ไม่มีทิศทางขยายจากโคนไปปลายที่ชัดเจน"},
+       {ok:false,text:"ปื้นด่างปนกับก้านใบสั้นผิดปกติและช่อดอกเปลี่ยนเป็นสีเขียวผิดธรรมชาติ"},
+       {ok:false,text:"ยังสรุปไม่ได้ชัดจากภาพนี้ ต้องส่องจากใบจริงในแปลง"}
+     ],
+     sampleARec:[0,3,4], sampleMethodRec:[0],
+     fact:"MMV เป็นไวรัสกลุ่ม Rhabdoviridae ที่แพร่ผ่านเพลี้ยกระโดดข้าวโพด (Peregrinus maidis) แบบถาวร (persistent-propagative) ต่างจาก SCMV/MDMV ที่แพร่ผ่านเพลี้ยอ่อนแบบไม่ถาวร และ MMV ไม่ติดผ่านเมล็ดพันธุ์เลย คู่มือระบุว่ากาบใบ/เปลือกฝักก็ด่างด้วย จึงเป็นตำแหน่งเก็บตัวอย่างเสริมได้เมื่อใบไม่ชัด"},
+
+    {code:"HPWMoV", nameTh:"โรคใบด่างที่ราบสูง", nameEn:"High Plains Wheat Mosaic Virus",
+     img:"images/hpwmov.jpg", genome:"RNA", techGroup:["mottle"],
+     fieldOk:1,
+     q2:{
+       q:"ลักษณะทั้งต้นข้าวโพดที่พบอาการใบผิดปกติ เป็นแบบใด?",
+       options:[
+         {ok:true, text:"ใบซีดขาวหรือเหลืองเริ่มจากปลายและขอบใบส่วนล่างก่อน อาจเปลี่ยนเป็นสีแดงในพันธุ์ที่สร้างแอนโธไซยานินสูง ต่อมาเนื้อเยื่อตายลามจากล่างขึ้นบน ต้น stunt/dwarf หรือหยุดโต และอาจล้มโคน"},
+         {ok:false,text:"ใบด่างเริ่มจากปลายยอดบนสุดก่อน ไม่มีอาการที่ใบล่าง"},
+         {ok:false,text:"ใบด่างขีด (streak) สีขาว ละเอียด ขนานเส้นใบทั้งต้น ไม่มีอาการซีดเป็นปื้น"},
+         {ok:false,text:"ต้นสูงปกติทุกด้าน ไม่มีผลต่อผลผลิต"}
+       ]},
+     lesion:{
+       primary:{q:"ลักษณะรอยโรคบนใบที่เห็นเป็นแบบใด?", options:[
+         {ok:true, text:"จุดซีดกลม-รี (1-3 มม.) รวมกันคล้าย จุดด่างประ (mottle) ที่ปลายใบ"},
+         {ok:false,text:"ปื้นด่างประ (mottle) สีเขียวเข้ม-เขียวอ่อนสลับกัน"},
+         {ok:false,text:"แถบด่างเขียวอ่อน-เหลือง ขนานแกนกลางใบ เชื่อมเป็นปื้น"},
+         {ok:false,text:"ปื้นด่างขนานละเอียด (ลักษณะขาดธาตุแมงกานีส)"}
+       ]},
+       continuity:{q:"ความต่อเนื่องของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"ขาดช่วง (ระยะแรก) แล้วต่อเนื่องมากขึ้นเมื่ออาการรุนแรง"},
+         {ok:false,text:"ไม่ต่อเนื่อง/ขาดช่วง"},
+         {ok:false,text:"ต่อเนื่อง"},
+         {ok:false,text:"ต่อเนื่อง (เชื่อมรวมจากโคนใบถึงปลายใบ)"}
+       ]},
+       width:{q:"ความกว้างของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"ไม่สม่ำเสมอ (จุดเล็กถึงปื้นกว้างที่ปลายใบ)"},
+         {ok:false,text:"กว้างไม่สม่ำเสมอ"},
+         {ok:false,text:"แคบคงที่"},
+         {ok:false,text:"กว้างมาก (ลักษณะขาดธาตุกำมะถัน)"}
+       ]},
+       arrangement:{q:"การเรียงตัวของรอยโรคบนใบ เป็นแบบใด?", options:[
+         {ok:true, text:"กระจาย เริ่มจากขอบ/ปลายใบส่วนล่าง"},
+         {ok:false,text:"ขนานเส้นใบ"},
+         {ok:false,text:"หย่อมกระจายขนานแนวเส้นใบ"},
+         {ok:false,text:"ขนานเส้นกลางใบ (ลักษณะขาดธาตุสังกะสี)"}
+       ]}
+     },
+     magQ:"ส่องแว่นขยาย 20x ที่ขอบรอยโรค ขนาด และเส้นทางของรอยด่างประบนใบ สิ่งที่เห็นเป็นแบบใด?",
+     magOptions:[
+       {ok:true, text:"จุดซีดรูปกลมหรือรีขนาด 1–3 มม. กระจายตามแนวเส้นใบ บางจุดเริ่มรวมกันเป็นปื้นด่าง (mosaic) ที่ปลายใบ ขอบจุดไม่คมแต่แยกจากเนื้อใบปกติได้"},
+       {ok:false,text:"ปื้นซีดขอบเบลอมาก ไล่ระดับสมมาตรตามตำแหน่งใบทั้งสองข้าง ไม่มีลักษณะจุดกลม/รีขนาดเล็กกระจาย"},
+       {ok:false,text:"ปื้นด่างปนกับก้านใบสั้นผิดปกติและส่วนดอกเปลี่ยนเป็นสีเขียวผิดธรรมชาติ"},
+       {ok:false,text:"ยังสรุปไม่ได้ชัดจากภาพนี้ ต้องส่องจากใบจริงในแปลง"}
+     ],
+     sampleARec:[0,2], sampleMethodRec:[0,2],
+     fact:"HPWMoV แพร่ผ่านไรกำมะหยี่ (wheat curl mite) เช่นเดียวกับ WSMV และจัดอยู่ในสกุล Emaravirus ซึ่งมีจีโนม RNA หลายท่อน (multipartite) ต่างจาก RNA virus ทั่วไปที่มีท่อนเดียว"},
+
+    {code:"WSMV", nameTh:"โรคใบด่างขีดข้าวสาลี", nameEn:"Wheat Streak Mosaic Virus",
+     img:"images/wsmv.jpg", genome:"RNA", techGroup:["mottle"],
+     fieldOk:1,
+     q2:{
+       q:"ลักษณะทั้งต้นข้าวโพดที่พบอาการใบผิดปกติ เป็นแบบใด?",
+       options:[
+         {ok:true, text:"ปล้องสั้นผิดปกติจนใบซ้อนกันแน่นเป็นกระจุก (rosetted) ร่วมกับใบด่างเหลืองซีดที่ขยายรวมกันเป็นปื้น อาการโดยรวมค่อนข้างเบา"},
+         {ok:false,text:"ต้นสูงชะลูดกว่าปกติ ปล้องยาวกว่าปกติ"},
+         {ok:false,text:"ใบเปลี่ยนสีแดงม่วงทั่วต้นอย่างรุนแรง"},
+         {ok:false,text:"ต้นปกติทุกด้าน อาการมีเฉพาะจุดเล็ก ๆ ที่ปลายใบเท่านั้น"}
+       ]},
+     lesion:{
+       primary:{q:"ลักษณะรอยโรคบนใบที่เห็นเป็นแบบใด?", options:[
+         {ok:true, text:"ปื้นด่างทางเหลืองกว้าง"},
+         {ok:false,text:"ปื้นด่างประ (mottle) สีเขียวเข้ม-เขียวอ่อนสลับกัน"},
+         {ok:false,text:"จุดซีดกลม-รี (1-3 มม.) รวมกันคล้ายด่างประ (mottle) ที่ปลายใบ"},
+         {ok:false,text:"ปื้นด่างเกือบขาว (ลักษณะขาดธาตุเหล็กรุนแรง)"}
+       ]},
+       continuity:{q:"ความต่อเนื่องของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"ต่อเนื่อง"},
+         {ok:false,text:"ไม่ต่อเนื่อง/ขาดช่วง"},
+         {ok:false,text:"ขาดช่วง (ระยะแรก) แล้วต่อเนื่องมากขึ้นเมื่ออาการรุนแรง"},
+         {ok:false,text:"ขาดช่วงสม่ำเสมอ"}
+       ]},
+       width:{q:"ความกว้างของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"กว้างไม่สม่ำเสมอ"},
+         {ok:false,text:"ไม่สม่ำเสมอ (ปื้นขนาดต่างกัน บางจุดเชื่อมกัน)"},
+         {ok:false,text:"แคบคงที่"},
+         {ok:false,text:"กลาง (ลักษณะขาดธาตุแมงกานีส)"}
+       ]},
+       arrangement:{q:"การเรียงตัวของรอยโรคบนใบ เป็นแบบใด?", options:[
+         {ok:true, text:"ขนานเส้นใบ"},
+         {ok:false,text:"หย่อมกระจายขนานแนวเส้นใบ"},
+         {ok:false,text:"กระจาย เริ่มจากขอบ/ปลายใบส่วนล่าง"},
+         {ok:false,text:"ขนานเส้นกลางใบ (ลักษณะขาดธาตุสังกะสี)"}
+       ]}
+     },
+     magQ:"ส่องแว่นขยาย 20x ที่ขอบรอยโรค ขนาด และเส้นทางของรอย mottle บนใบ สิ่งที่เห็นเป็นแบบใด?",
+     magOptions:[
+       {ok:true, text:"ปื้นเหลืองซีดขนาดเล็กหลายจุดเริ่มขยายและรวมตัวกันเป็นปื้นกว้างขึ้น ขอบไม่คมแต่มีทิศทางตามแนวเส้นใบ"},
+       {ok:false,text:"ปื้นซีดขอบเบลอมาก สมมาตรทั้งสองข้างใบ ไล่ระดับตามอายุใบอย่างสม่ำเสมอ ไม่มีลักษณะจุดเล็กขยายรวมตัว"},
+       {ok:false,text:"ปื้นด่างปนกับก้านใบสั้นผิดปกติชนิดรุนแรงและส่วนดอกผิดรูปเป็นใบ (phyllody)"},
+       {ok:false,text:"ยังสรุปไม่ได้ชัดจากภาพนี้ ต้องส่องจากใบจริงในแปลง"}
+     ],
+     sampleARec:[0], sampleMethodRec:[0,1],
+     fact:"WSMV แพร่ผ่านไรกำมะหยี่ขนาดจิ๋ว (wheat curl mite) เป็นพาหะหลัก — ไรชนิดเดียวกับที่แพร่ HPWMoV แต่ WSMV ทำให้อาการรุนแรงน้อยกว่า HPWMoV คู่มือยังระบุปื้นแดงที่เมล็ดปลายฝักเป็นข้อสังเกตประกอบ แต่เนื้อเยื่อแก่ตรงนั้นไม่เหมาะเป็นตัวอย่างหลักส่งตรวจ"},
+
+    {code:"MDMV", nameTh:"โรคใบด่างแคระข้าวโพด", nameEn:"Maize Dwarf Mosaic Virus",
+     img:"images/mdmv.jpg", genome:"RNA", techGroup:["mottle","stunt"],
+     fieldOk:1,
+     q2:{
+       q:"ลักษณะทั้งต้นข้าวโพดที่พบอาการใบผิดปกติ เป็นแบบใด?",
+       options:[
+         {ok:true, text:"ใบด่าง mottle เขียวเข้ม–อ่อนสลับกันกระจายทั่วใบ ต้นแคระแกรน (stunt/dwarf) ระดับหนึ่ง ฝักติดเมล็ดไม่สมบูรณ์"},
+         {ok:false,text:"ใบด่างขีด (streak) สีขาวละเอียดขนานเส้นใบ ไม่มีอาการด่างประ (mottle)"},
+         {ok:false,text:"ต้นแคระรุนแรงมาก ใบเปลี่ยนสีแดงม่วงทั่วต้น ไม่ติดฝักเลย"},
+         {ok:false,text:"ต้นปกติทุกด้าน ฝักสมบูรณ์เต็มเมล็ด"}
+       ]},
+     lesion:{
+       primary:{q:"ลักษณะรอยโรคบนใบที่เห็นเป็นแบบใด?", options:[
+         {ok:true, text:"ปื้นด่าง mottle (เขียวเข้ม-เขียวอ่อนสลับกัน)"},
+         {ok:false,text:"แถบด่างเขียวอ่อน-เหลือง ขนานแกนกลางใบ เชื่อมเป็นปื้น"},
+         {ok:false,text:"ด่างขีด (streak) สั้น เรียงถี่"},
+         {ok:false,text:"ปื้นด่างกว้าง (ลักษณะขาดธาตุเหล็ก)"}
+       ]},
+       continuity:{q:"ความต่อเนื่องของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"ไม่ต่อเนื่อง/ขาดช่วง"},
+         {ok:false,text:"ต่อเนื่อง (เชื่อมต่อจากโคนใบถึงปลายใบ)"},
+         {ok:false,text:"ขาดช่วงสม่ำเสมอ"},
+         {ok:false,text:"ต่อเนื่องทั่วใบ (ลักษณะขาดธาตุกำมะถัน)"}
+       ]},
+       width:{q:"ความกว้างของรอยโรคเป็นแบบใด?", options:[
+         {ok:true, text:"ไม่สม่ำเสมอ (ปื้นขนาดต่างกัน บางจุดเชื่อมกัน)"},
+         {ok:false,text:"แคบคงที่"},
+         {ok:false,text:"กว้างไม่สม่ำเสมอ"},
+         {ok:false,text:"กว้างมาก (ลักษณะขาดธาตุสังกะสี)"}
+       ]},
+       arrangement:{q:"การเรียงตัวของรอยโรคบนใบ เป็นแบบใด?", options:[
+         {ok:true, text:"หย่อมกระจายขนานแนวเส้นใบ"},
+         {ok:false,text:"ขนานเส้นใบ"},
+         {ok:false,text:"กระจาย เริ่มจากขอบ/ปลายใบส่วนล่าง"},
+         {ok:false,text:"ขนานเส้นกลางใบ (ลักษณะขาดธาตุสังกะสี)"}
+       ]}
+     },
+     magQ:"ส่องแว่นขยาย 20x ที่ขอบรอยโรค ขนาด และเส้นทางของรอยด่างประบนใบ สิ่งที่เห็นเป็นแบบใด?",
+     magOptions:[
+       {ok:true, text:"แต้มสีซีดขนาดไม่สม่ำเสมอกระจายแบบไม่มีทิศทางตายตัว ปะปนกับส่วนใบสีเขียวเข้มปกติ"},
+       {ok:false,text:"ปื้นซีดขอบเบลอมาก ไล่ระดับสมมาตรตามตำแหน่งใบ ไม่มีลักษณะแต้มกระจายแบบสุ่ม"},
+       {ok:false,text:"ปื้นด่างปนกับก้านใบสั้นผิดปกติและส่วนดอกเปลี่ยนเป็นสีเขียวผิดธรรมชาติ"},
+       {ok:false,text:"ยังสรุปไม่ได้ชัดจากภาพนี้ ต้องส่องจากใบจริงในแปลง"}
+     ],
+     compareImg:"images/scmv_compare.jpg", compareCaption:"ภาพเปรียบเทียบ: SCMV",
+     compareNote:"ลองเทียบกับภาพ SCMV ด้านขวา — อาการ mottle แทบเหมือนกันทุกประการ นี่คือของจริง ไม่ใช่เรื่องที่สังเกตพลาด: MDMV กับ SCMV เป็นโพทีไวรัสที่ใกล้ชิดกันมากจน <b>แยกไม่ได้จากลักษณะภายนอกแม้แต่ในทางวิชาการ</b> ต้องยืนยันด้วย ELISA หรือ RT-PCR เท่านั้น",
+     sampleARec:[0], sampleMethodRec:[0,2],
+     fact:"เมื่อสงสัยกลุ่มนี้ ไม่จำเป็นต้องฟันธงว่าเป็น MDMV หรือ SCMV ก่อนส่งตรวจ — ทั้งคู่เป็น RNA virus ส่งรวมกันในใบส่งตรวจเดียวได้อยู่แล้ว MDMV ยังมีหญ้าพง (Johnsongrass) เป็นแหล่งอาศัยสำรองที่สำคัญเช่นเดียวกับ SCMV และอาการแคระ/ฝักไม่สมบูรณ์เป็นเอกลักษณ์ตั้งแต่เริ่มผิดปกติ (ต่างจาก MCMV/SCMV ที่แคระเป็นผลสะสมช่วงหลัง) จึงจัดอยู่กลุ่ม stunt/dwarf ควบคู่กับกลุ่ม mottle ด้วย"}
+  ];
+
+  // ---------- state ----------
+  var S = { idx:0, step:0, ans:{}, done:{} };
+  var STEP_COUNT = 6; // 0 field,1 plant,2 lesion,3 mag+group,4 sample,5 reveal
+
+  var chiprowEl = document.getElementById("chiprow");
+  var progressEl = document.getElementById("progress");
+  var stageEl = document.getElementById("stage");
+
+  function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+
+  function renderChips(){
+    chiprowEl.innerHTML = "";
+    CASES.forEach(function(c,i){
+      var b = document.createElement("button");
+      b.type="button";
+      b.className = "chip"+(i===S.idx?" current":"")+(S.done[i]?" done":"");
+      b.innerHTML = '<span class="dot"></span>'+c.code;
+      b.addEventListener("click", function(){ S.idx=i; S.step = S.done[i]?5:0; render(); });
+      chiprowEl.appendChild(b);
+    });
+  }
+
+  function renderProgress(){
+    progressEl.innerHTML="";
+    for(var i=0;i<STEP_COUNT;i++){
+      var el=document.createElement("i");
+      if(i<=S.step) el.className="on";
+      progressEl.appendChild(el);
+    }
+  }
+
+  function currentAns(){
+    S.ans[S.idx] = S.ans[S.idx] || {};
+    return S.ans[S.idx];
+  }
+
+  function optButton(text, tagChar, onClick){
+    var b=document.createElement("button");
+    b.type="button"; b.className="opt";
+    b.innerHTML = '<span class="tag">'+tagChar+'</span><span>'+text+'</span>';
+    b.addEventListener("click", onClick);
+    return b;
+  }
+
+  function nextBtn(label, onClick, disabled){
+    var wrap=document.createElement("div"); wrap.className="actions";
+    var b=document.createElement("button"); b.type="button"; b.className="btn"; b.textContent=label;
+    if(disabled) b.disabled=true;
+    b.addEventListener("click", onClick);
+    wrap.appendChild(b);
+    return wrap;
+  }
+
+  function goto(step){ S.step=step; render(); }
+
+  function render(){
+    renderChips();
+    renderProgress();
+    var c = CASES[S.idx];
+    var a = currentAns();
+    stageEl.innerHTML = "";
+
+    if(S.step===0) renderField(c,a);
+    else if(S.step===1) renderPlant(c,a);
+    else if(S.step===2) renderLesion(c,a);
+    else if(S.step===3) renderMag(c,a);
+    else if(S.step===4) renderSample(c,a);
+    else renderReveal(c,a);
+  }
+
+  // แบบคำถามเลือกตอบเดี่ยว ใช้ซ้ำได้ทั้งขั้น 0/1/3
+  function singleChoice(qText, options, ansKey, a, onNext, nextLabel){
+    var h=document.createElement("h2"); h.textContent=qText;
+    stageEl.appendChild(h);
+    var opts=document.createElement("div"); opts.className="opts";
+    options.forEach(function(o,i){
+      var letter=["ก","ข","ค","ง","จ"][i];
+      var btn=optButton(esc(o.text), letter, function(){
+        if(a[ansKey]!==undefined) return;
+        a[ansKey]=i; render();
+      });
+      if(a[ansKey]!==undefined){
+        btn.disabled=true;
+        if(i===a[ansKey]) btn.classList.add(o.ok?"pick-good":"pick-bad");
+        else if(o.ok) btn.classList.add("other-good");
+      }
+      opts.appendChild(btn);
+    });
+    stageEl.appendChild(opts);
+    if(a[ansKey]!==undefined){
+      var picked=options[a[ansKey]];
+      var note=document.createElement("div");
+      note.className="note "+(picked.ok?"good":"warn");
+      note.innerHTML = picked.ok?"<b>ถูกต้อง</b>":"<b>ทบทวนอีกครั้ง</b> — ลองเทียบกับตัวเลือกอื่นดูใหม่";
+      stageEl.appendChild(note);
+      stageEl.appendChild(nextBtn(nextLabel, onNext));
+    }
+  }
+
+  // Step 0 — Q1: รูปแบบการกระจายในแปลง
+  function renderField(c,a){
+    var eyebrow=document.createElement("div"); eyebrow.className="eyebrow"; eyebrow.textContent="เคส "+(S.idx+1)+" / "+CASES.length+" · ขั้นที่ 1 — รูปแบบการกระจายในแปลง";
+    stageEl.append(eyebrow);
+
+    var frame=document.createElement("div"); frame.className="photoframe";
+    frame.innerHTML='<img src="'+c.img+'" alt="ภาพรอยโรคข้าวโพด เคส '+c.code+'" loading="lazy">'+
+      '<div class="cap"><span>ภาพประกอบเคสนี้</span><span class="mono">เคส '+(S.idx+1)+'</span></div>';
+    stageEl.appendChild(frame);
+
+    var ctx=document.createElement("div"); ctx.className="note info";
+    ctx.innerHTML = "ผู้ตรวจแปลงพบอาการผิดปกติในแปลงข้าวโพด และสงสัยว่าอาจเกิดจากไวรัส ก่อนจะเริ่มวินิจฉัยจากลักษณะอาการ ให้ตรวจสอบรูปแบบการกระจายของอาการทั่วแปลงก่อน (ไม่ใช้ข้อมูลพาหะ/แมลงที่พบเป็นหลักฐาน เพราะแมลงพบได้ทุกฤดูกาลไม่ว่าจะมีไวรัสเป้าหมายหรือไม่)";
+    stageEl.append(ctx);
+
+    var h=document.createElement("h2"); h.textContent=FIELD_Q;
+    stageEl.appendChild(h);
+    var opts=document.createElement("div"); opts.className="opts";
+    FIELD_POOL.forEach(function(text,i){
+      var letter=["ก","ข","ค","ง","จ"][i];
+      var btn=optButton(esc(text), letter, function(){
+        if(a.field!==undefined) return;
+        a.field=i; render();
+      });
+      if(a.field!==undefined){
+        btn.disabled=true;
+        if(i===a.field) btn.classList.add("sel");
+      }
+      opts.appendChild(btn);
+    });
+    stageEl.appendChild(opts);
+
+    if(a.field!==undefined){
+      var note=document.createElement("div"); note.className="note info";
+      note.innerHTML = "<b>บันทึกไว้แล้ว</b> — ใช้รูปแบบนี้เป็นข้อมูลประกอบการพิจารณาร่วมกับลักษณะอาการบนใบในขั้นถัดไป รูปแบบการกระจายในแปลงจริงพบต่างกันได้แม้เป็นไวรัสชนิดเดียวกัน ขั้นนี้จึงไม่มีคำตอบถูก/ผิดตายตัว";
+      stageEl.appendChild(note);
+      stageEl.appendChild(nextBtn("ไปดูตำแหน่ง/ลักษณะบนต้น →", function(){goto(1);}));
+    }
+  }
+
+  // Step 1 — Q2: ลักษณะทั้งต้นที่พบ
+  function renderPlant(c,a){
+    var eyebrow=document.createElement("div"); eyebrow.className="eyebrow"; eyebrow.textContent="เคส "+(S.idx+1)+" / "+CASES.length+" · ขั้นที่ 2 — ตำแหน่ง/ลักษณะอาการบนต้น";
+    stageEl.append(eyebrow);
+    singleChoice(c.q2.q, c.q2.options, "q2", a, function(){goto(2);}, "ดูใบระยะใกล้ →");
+  }
+
+  // Step 2 — photo + 4 คำถามมาตรฐานอ่านลาย
+  function renderLesion(c,a){
+    var eyebrow=document.createElement("div"); eyebrow.className="eyebrow"; eyebrow.textContent="เคส "+(S.idx+1)+" / "+CASES.length+" · ขั้นที่ 3 — อ่านลายบนใบ";
+    var h=document.createElement("h2"); h.textContent="เลือกใบที่แสดงอาการชัด แล้วดูระยะใกล้โดยใช้แว่นขยาย ตรวจดูขอบเขตรอยโรคบนเนื้อใบหรือเส้นใบ พบลักษณะใด";
+    stageEl.append(eyebrow,h);
+
+    var frame=document.createElement("div"); frame.className="photoframe";
+    frame.innerHTML='<img src="'+c.img+'" alt="ภาพรอยโรคข้าวโพด เคส '+c.code+'" loading="lazy">'+
+      '<div class="cap"><span>ภาพระยะใกล้บนใบ</span><span class="mono">เคส '+(S.idx+1)+'</span></div>';
+    stageEl.appendChild(frame);
+
+    var parts = [
+      {key:"primary", label:"1. ลักษณะรอยหลัก", data:c.lesion.primary},
+      {key:"continuity", label:"2. ความต่อเนื่อง", data:c.lesion.continuity},
+      {key:"width", label:"3. ความกว้าง", data:c.lesion.width},
+      {key:"arrangement", label:"4. การเรียงตัว", data:c.lesion.arrangement}
+    ];
+
+    var allDone = true;
+    parts.forEach(function(p, pi){
+      var prevDone = pi===0 || a["lesion_"+parts[pi-1].key]!==undefined;
+      if(!prevDone){ allDone=false; return; }
+      var sub=document.createElement("div"); sub.className="subhead"; sub.textContent=p.label;
+      stageEl.appendChild(sub);
+      var h3=document.createElement("div"); h3.style.fontSize="15px"; h3.style.fontWeight="600"; h3.textContent=p.data.q;
+      stageEl.appendChild(h3);
+      var opts=document.createElement("div"); opts.className="opts";
+      var ansKey = "lesion_"+p.key;
+      p.data.options.forEach(function(o,i){
+        var letter=["ก","ข","ค","ง"][i];
+        var btn=optButton(esc(o.text), letter, function(){
+          if(a[ansKey]!==undefined) return;
+          a[ansKey]=i; render();
+        });
+        if(a[ansKey]!==undefined){
+          btn.disabled=true;
+          if(i===a[ansKey]) btn.classList.add(o.ok?"pick-good":"pick-bad");
+          else if(o.ok) btn.classList.add("other-good");
+        }
+        opts.appendChild(btn);
+      });
+      stageEl.appendChild(opts);
+      if(a[ansKey]===undefined) allDone=false;
+    });
+
+    if(allDone){
+      var note=document.createElement("div"); note.className="note good";
+      note.innerHTML = "<b>บรรยายรอยครบ 4 ข้อแล้ว</b> — ต่อไปลองยืนยันรายละเอียดใต้แว่นขยาย";
+      stageEl.appendChild(note);
+      stageEl.appendChild(nextBtn("ส่องแว่นขยาย 20x →", function(){goto(3);}));
+    }
+  }
+
+  // Step 3 — magnification + ปิดท้ายด้วยกลุ่มเทคนิค (multi-select)
+  function renderMag(c,a){
+    var eyebrow=document.createElement("div"); eyebrow.className="eyebrow"; eyebrow.textContent="เคส "+(S.idx+1)+" / "+CASES.length+" · ขั้นที่ 4 — แว่นขยาย 20x";
+    var lead=document.createElement("p"); lead.className="lead"; lead.textContent="นี่คือจุดที่ทบทวนความเห็นได้อีกครั้ง — โอกาสเป็นไวรัสอาจสูงขึ้นหรือเปลี่ยนใจก็ได้ ขึ้นกับสิ่งที่เห็นจริงใต้แว่นขยาย และช่วยบอกได้ว่ารายชื่อไวรัสที่ยังเป็นไปได้เหลือกี่ชนิด";
+    stageEl.append(eyebrow,lead);
+
+    singleChoiceInline(c.magQ, c.magOptions, "mag", a);
+
+    if(a.mag!==undefined){
+      var note=document.createElement("div"); note.className="note info";
+      note.innerHTML = MAG_INSIGHT;
+      stageEl.appendChild(note);
+
+      if(c.compareImg){
+        var cmp=document.createElement("div"); cmp.className="note info";
+        cmp.innerHTML = c.compareNote;
+        var row=document.createElement("div"); row.className="compare";
+        row.innerHTML =
+          '<figure><img src="'+c.img+'" alt="'+c.code+'"><figcaption>'+c.code+'</figcaption></figure>'+
+          '<figure><img src="'+c.compareImg+'" alt="'+c.compareCaption+'"><figcaption>'+c.compareCaption+'</figcaption></figure>';
+        cmp.appendChild(row);
+        stageEl.appendChild(cmp);
+      }
+
+      var sub=document.createElement("div"); sub.className="subhead"; sub.textContent="ปิดท้าย: จัดกลุ่มเทคนิค (เลือกได้มากกว่า 1 กลุ่ม)";
+      stageEl.appendChild(sub);
+      var lead2=document.createElement("p"); lead2.className="lead"; lead2.textContent="จากการวินิจฉัยตามขั้นตอนที่ผ่านมา เคสนี้เข้าได้กับกลุ่มอาการใดของไวรัสข้าวโพด (เลือกได้มากกว่า 1 กลุ่ม)";
+      stageEl.appendChild(lead2);
+
+      var tgOpts=document.createElement("div"); tgOpts.className="opts";
+      a.techGroup = a.techGroup || [];
+      TECH_GROUP_POOL.forEach(function(g){
+        var btn=optButton('<b>'+esc(g.label)+'</b> — '+esc(g.desc)+'<br><span class="mono" style="font-size:12px;color:var(--muted)">'+esc(g.viruses)+'</span>', "", function(){
+          if(a.tgSubmitted) return;
+          var idx=a.techGroup.indexOf(g.id);
+          if(idx===-1) a.techGroup.push(g.id); else a.techGroup.splice(idx,1);
+          render();
+        });
+        btn.querySelector(".tag").textContent = a.techGroup.indexOf(g.id)!==-1?"✓":"";
+        if(a.techGroup.indexOf(g.id)!==-1) btn.classList.add("sel");
+        if(a.tgSubmitted){
+          btn.disabled=true;
+          btn.classList.remove("sel");
+          var correct = c.techGroup.indexOf(g.id)!==-1;
+          var picked = a.techGroup.indexOf(g.id)!==-1;
+          if(picked && correct) btn.classList.add("pick-good");
+          else if(picked && !correct) btn.classList.add("pick-bad");
+          else if(!picked && correct) btn.classList.add("other-good");
+        }
+        tgOpts.appendChild(btn);
+      });
+      stageEl.appendChild(tgOpts);
+
+      if(!a.tgSubmitted){
+        stageEl.appendChild(nextBtn("ตรวจคำตอบกลุ่มอาการ", function(){
+          if(a.techGroup.length===0) return;
+          a.tgSubmitted=true; render();
+        }));
+      } else {
+        stageEl.appendChild(nextBtn("ไปวางแผนเก็บตัวอย่าง →", function(){goto(4);}));
+      }
+    }
+  }
+
+  function singleChoiceInline(qText, options, ansKey, a){
+    var h=document.createElement("h2"); h.textContent=qText;
+    stageEl.appendChild(h);
+    var opts=document.createElement("div"); opts.className="opts";
+    options.forEach(function(o,i){
+      var letter=["ก","ข","ค","ง"][i];
+      var btn=optButton(esc(o.text), letter, function(){
+        if(a[ansKey]!==undefined) return;
+        a[ansKey]=i; render();
+      });
+      if(a[ansKey]!==undefined){
+        btn.disabled=true;
+        if(i===a[ansKey]) btn.classList.add(o.ok?"pick-good":"pick-bad");
+        else if(o.ok) btn.classList.add("other-good");
+      }
+      opts.appendChild(btn);
+    });
+    stageEl.appendChild(opts);
+  }
+
+  // Step 4 — วางแผนเก็บตัวอย่าง: เช็คลิสต์ 2 ส่วน ติ๊กได้ไม่จำกัด ไม่บล็อกการเดินหน้า
+  function renderSample(c,a){
+    var eyebrow=document.createElement("div"); eyebrow.className="eyebrow"; eyebrow.textContent="เคส "+(S.idx+1)+" / "+CASES.length+" · ขั้นที่ 5 — วางแผนเก็บตัวอย่าง";
+    var h=document.createElement("h2"); h.textContent="ขมวดความคิดเป็นหลักฐาน";
+    var lead=document.createElement("p"); lead.className="lead"; lead.textContent="จากหลักฐานรอยโรคที่ตรวจสอบผ่านมา (ภาพรวมแปลง + ลักษณะรอยโรค 4 ข้อ + รายละเอียดใต้แว่นขยาย) ให้สรุปเป็นแผนเก็บตัวอย่างของคุณ — ติ๊กได้หลายข้อไม่จำกัดทั้งสองส่วน";
+    stageEl.append(eyebrow,h,lead);
+
+    a.sampleA = a.sampleA || [];
+    a.sampleM = a.sampleM || [];
+
+    function checklist(title, pool, key, recArr){
+      var sub=document.createElement("div"); sub.className="subhead"; sub.textContent=title;
+      stageEl.appendChild(sub);
+      var opts=document.createElement("div"); opts.className="opts";
+      pool.forEach(function(text,i){
+        var btn=optButton(esc(text), "", function(){
+          if(a.sampleSubmitted) return;
+          var arr=a[key]; var idx=arr.indexOf(i);
+          if(idx===-1) arr.push(i); else arr.splice(idx,1);
+          render();
+        });
+        var picked = a[key].indexOf(i)!==-1;
+        btn.querySelector(".tag").textContent = picked?"✓":"";
+        if(picked) btn.classList.add("sel");
+        if(a.sampleSubmitted){
+          btn.disabled=true; btn.classList.remove("sel");
+          var rec = recArr.indexOf(i)!==-1;
+          if(picked && rec) btn.classList.add("pick-good");
+          else if(picked && !rec) btn.classList.add("pick-bad");
+          else if(!picked && rec) btn.classList.add("other-good");
+        }
+        opts.appendChild(btn);
+      });
+      stageEl.appendChild(opts);
+    }
+
+    checklist("ส่วน A — ตำแหน่ง/อวัยวะพืชที่จะเก็บตัวอย่าง", SAMPLE_POS_POOL, "sampleA", c.sampleARec);
+    checklist("ส่วน B — วิธีตรวจที่จะสั่ง", LAB_METHOD_POOL, "sampleM", c.sampleMethodRec);
+
+    if(!a.sampleSubmitted){
+      stageEl.appendChild(nextBtn("ตรวจคำตอบ", function(){
+        if(a.sampleA.length===0 && a.sampleM.length===0) return;
+        a.sampleSubmitted=true; render();
+      }));
+    } else {
+      var note=document.createElement("div"); note.className="note good";
+      note.innerHTML = "<b>สีเขียว</b> = ตรงกับที่แนะนำ · <b>สีส้ม</b> = ติ๊กไว้แต่ไม่เหมาะกับเคสนี้ · <b>ขอบเขียวไม่ทึบ</b> = ทางเลือกที่แนะนำแต่ยังไม่ได้ติ๊ก — ไม่มีผิดร้ายแรง เพราะบางกรณีเลือกได้มากกว่า 1 ทาง ใช้เป็นข้อสะท้อนคิดเพื่อทบทวน";
+      stageEl.appendChild(note);
+      stageEl.appendChild(nextBtn("ดูสรุปเคสนี้ →", function(){goto(5);}));
+    }
+  }
+
+  // Step 5 — สรุปเคส
+  function renderReveal(c,a){
+    var eyebrow=document.createElement("div"); eyebrow.className="eyebrow"; eyebrow.textContent="สรุปเคส";
+    stageEl.appendChild(eyebrow);
+
+    var reveal=document.createElement("div"); reveal.className="reveal";
+    var gLabel = c.techGroup.map(function(id){
+      var g = TECH_GROUP_POOL.filter(function(x){return x.id===id;})[0];
+      return g.label;
+    }).join(" + ");
+    reveal.innerHTML =
+      '<span class="code">'+c.code+'</span>'+
+      '<div><h3>'+esc(c.nameTh)+'</h3><p>'+esc(c.nameEn)+' · จีโนม '+c.genome+' · กลุ่มเทคนิค: '+esc(gLabel)+'</p></div>';
+    stageEl.appendChild(reveal);
+
+    var fact=document.createElement("div"); fact.className="note info";
+    fact.innerHTML = "<b>รู้เพิ่ม:</b> "+c.fact;
+    stageEl.appendChild(fact);
+
+    var rule=document.createElement("div"); rule.className="rulecard";
+    rule.innerHTML = '<div class="eyebrow">หลักการสั่งตรวจแล็บ — ใช้ได้ทุกเคส</div>'+REF_HTML;
+    stageEl.appendChild(rule);
+
+    S.done[S.idx]=true;
+
+    var isLast = S.idx===CASES.length-1;
+    stageEl.appendChild(nextBtn(isLast?"ทำครบทุกเคสแล้ว":"เคสถัดไป →", function(){
+      if(isLast){ renderFinished(); return; }
+      S.idx = S.idx+1; S.step=0; render();
+    }));
+  }
+
+  function renderFinished(){
+    renderChips(); renderProgress();
+    stageEl.innerHTML="";
+    var d=document.createElement("div"); d.className="done-screen";
+    d.innerHTML =
+      '<div class="big">🌽✅</div>'+
+      '<h2>ครบทั้ง 9 เคสแล้ว</h2>'+
+      '<p class="lead">กดที่ชื่อเคสด้านบนเพื่อย้อนกลับไปทบทวนเคสไหนก็ได้ หรือเปิด “หลักการสั่งตรวจแล็บ” เพื่อทวนกฎ RNA/DNA อีกครั้ง</p>';
+    stageEl.appendChild(d);
+    var wrap=document.createElement("div"); wrap.className="actions";
+    var b=document.createElement("button"); b.type="button"; b.className="btn ghost"; b.textContent="เริ่มเคสแรกใหม่";
+    b.addEventListener("click", function(){ S.idx=0; S.step=0; render(); });
+    wrap.appendChild(b);
+    stageEl.appendChild(wrap);
+  }
+
+  // ---------- reference modal ----------
+  var refModal = document.getElementById("refModal");
+  document.getElementById("openRef").addEventListener("click", function(){
+    try{ refModal.showModal(); }catch(e){}
+  });
+  document.getElementById("closeRef").addEventListener("click", function(){
+    try{ refModal.close(); }catch(e){}
+  });
+
+  render();
+})();
+</script>
+
+</body></html>
